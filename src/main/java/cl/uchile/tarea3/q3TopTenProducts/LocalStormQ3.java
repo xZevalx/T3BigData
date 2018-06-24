@@ -3,34 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cl.uchile.tarea3.consulta1;
+package cl.uchile.tarea3.q3TopTenProducts;
 
-import java.util.Properties;
-import org.apache.storm.LocalCluster;
 import org.apache.storm.Config;
-import org.apache.storm.kafka.BrokerHosts;
-import org.apache.storm.kafka.SpoutConfig;
-import org.apache.storm.kafka.StringScheme;
-import org.apache.storm.kafka.ZkHosts;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.kafka.*;
+import org.apache.storm.kafka.bolt.KafkaBolt;
 import org.apache.storm.spout.SchemeAsMultiScheme;
 import org.apache.storm.topology.TopologyBuilder;
-import org.apache.storm.kafka.KafkaSpout;
-import org.apache.storm.kafka.bolt.KafkaBolt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cl.uchile.tarea3.ProbabilidadToCassandra;
+import java.util.Properties;
 
-/**
- *
- * @author FelipeEsteban
- */
-public class LocalStorm_catven {
+public class LocalStormQ3 {
 
     /**
      * @param args the command line arguments
      */
-    private static final Logger LOG = LoggerFactory.getLogger(LocalStorm_catven.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LocalStormQ3.class);
 
     public static void main(String[] args) {
         //Configuracion de Storm para que lea la cola Local de Kafka
@@ -65,15 +56,13 @@ public class LocalStorm_catven {
         
         //Accedemos al Spout de Kafka definido previamente
         builder.setSpout("KafkaSpout", kafkaSpout);
-        
-        //
-        builder.setBolt("CategoriaFilter", new FilterBolt_catven(), 1)
+
+        builder.setBolt("ProductFilter", new FilterBoltQ3(), 1)
                 .shuffleGrouping("KafkaSpout");
-        
-        /*
-        builder.setBolt("Probabilidad", new ProbabilidadToCassandra(), 4)
-                .shuffleGrouping("ProbabilidadFilter");
-*/
+
+        builder.setBolt("salesPerProduct", new DataQ3ToCassandra(), 1)
+                .shuffleGrouping("ProductFilter");
+
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("Tarea3", config, builder.createTopology());
 

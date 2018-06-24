@@ -1,0 +1,4 @@
+Q1: create table sales_per_category (category bigint PRIMARY KEY, n_sales bigint);
+Q2: create table spent_per_client (client ascii PRIMARY KEY, n_purchases bigint, total_spent double);
+Q3: create table sales_per_product (product_id bigint PRIMARY KEY, name ascii, n_sales bigint);
+Q4: create table subsidiary_sales (subsidiary_id bigint PRIMARY KEY,  location ascii, n_sales bigint);

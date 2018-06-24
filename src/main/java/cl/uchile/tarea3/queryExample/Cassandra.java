@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cl.uchile.tarea3;
+package cl.uchile.tarea3.queryExample;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.LocalDate;

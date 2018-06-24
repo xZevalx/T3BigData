@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cl.uchile.tarea3;
+package cl.uchile.tarea3.queryExample;
 
 import java.util.Properties;
+
 import org.apache.storm.LocalCluster;
 import org.apache.storm.Config;
 import org.apache.storm.kafka.BrokerHosts;

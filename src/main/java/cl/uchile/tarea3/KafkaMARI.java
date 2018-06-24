@@ -25,7 +25,7 @@ public class KafkaMARI {
     public static void main(String[] argv) throws Exception {
 
         String topicName = "RetailMari";
-        String groupId = "Pipe";
+        String groupId = "SebaSapbee";
 
         ConsumerThread consumerRunnable = new ConsumerThread(topicName, groupId);
         consumerRunnable.start();
