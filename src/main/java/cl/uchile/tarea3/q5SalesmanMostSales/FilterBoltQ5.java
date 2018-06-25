@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cl.uchile.tarea3.q3TopTenProducts;
+package cl.uchile.tarea3.q5SalesmanMostSales;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,37 +19,26 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class FilterBoltQ3 extends BaseBasicBolt {
+public class FilterBoltQ5 extends BaseBasicBolt {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FilterBoltQ3.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FilterBoltQ5.class);
 
     @Override
     public void execute(Tuple tuple, BasicOutputCollector collector) {
         try {
             JsonNode object = new ObjectMapper().readTree(tuple.getString(0));
-            JsonNode products = object.get("productos");
+            JsonNode employee = object.get("empleado");
+            String rutSalesman = employee.get("rut").asText();
 
-            String productName;
-            long productId;
-
-            for (JsonNode product : products) {
-                try {
-                    productName = product.get("name").asText();
-                    productId = product.get("itemId").asLong();
-                    System.out.println("Producto " + productName + " con id " + productId);
-                    collector.emit(new Values(productName, productId));
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
+            collector.emit(new Values(rutSalesman));
 
         } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(FilterBoltQ3.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FilterBoltQ5.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("productName", "productId"));
+        declarer.declare(new Fields("rutSalesman"));
     }
 }

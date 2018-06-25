@@ -25,18 +25,18 @@ public class FilterBoltQ1 extends BaseBasicBolt {
     @Override
     public void execute(Tuple tuple, BasicOutputCollector collector) {
         try {
-            //mapeamos el objeto
+            // Usar un deserializador para leer el json (en el control puede ser pseudo código)
             JsonNode object = new ObjectMapper().readTree(tuple.getString(0));
 
             JsonNode productos = object.get("productos");
             
-            int category_id;
+            long category_id;
 
             //itereamos sobre los productos de la boleta
             for (JsonNode producto : productos) {
                 try {
-                    category_id = producto.get("category_id").asInt();
-                    System.out.println("Categoria " + category_id);
+                    category_id = producto.get("category_id").asLong();
+                    System.out.println("Emitiendo categoria " + category_id);
                     collector.emit(new Values(category_id));
                 } catch (Exception e) {
                     System.out.println(e);
@@ -50,6 +50,6 @@ public class FilterBoltQ1 extends BaseBasicBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("category_id"));
+        declarer.declare(new Fields("category"));
     }
 }

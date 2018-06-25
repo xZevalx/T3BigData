@@ -27,9 +27,9 @@ public class DataQ4ToCassandra extends CassandraBaseBolt {
         String location = tuple.getStringByField("location");
         String table = "subsidiary_sales";
 
-        System.out.println("Subsidiary with id" + subsidiaryId + "located at " + location);
+        System.out.println("Subsidiary with id " + subsidiaryId + " located at " + location);
 
-        ResultSet results = session.execute("SELECT * FROM " + table + " WHERE subsidiary_id='"+subsidiaryId+"'");
+        ResultSet results = session.execute("SELECT * FROM " + table + " WHERE subsidiary_id="+subsidiaryId);
         for (Row row : results) {
             nSales += row.getLong("n_sales");
         }

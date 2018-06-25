@@ -30,6 +30,10 @@ public class FilterBoltQ2 extends BaseBasicBolt {
             JsonNode products = object.get("productos");
             String client = object.get("cliente").asText();
 
+            if (client.equals("")) {
+                client = null;
+            }
+
             double totalSpent = 0;
 
             for (JsonNode product : products) {

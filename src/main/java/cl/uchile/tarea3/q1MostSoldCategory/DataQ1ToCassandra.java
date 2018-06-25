@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cl.uchile.tarea3.q1MostSoldCategory;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.Clause;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import cl.uchile.tarea3.CassandraBaseBolt;
@@ -25,18 +21,18 @@ public class DataQ1ToCassandra extends CassandraBaseBolt {
     @Override
     public void execute(Tuple tuple, BasicOutputCollector collector) {
         long nSales = 1;
-        long categoryId = tuple.getLongByField("category_id");
+        long category = tuple.getLongByField("category");
         String table="sales_per_category";
 
-        System.out.println("ID de categoria: " + categoryId);
+        System.out.println("Actualizando categoria: " + category);
 
-        ResultSet results = session.execute("SELECT * FROM " + table + " WHERE category_id='"+categoryId+"'");
+        ResultSet results = session.execute("SELECT * FROM " + table + " WHERE category="+category);
         for (Row row : results) {
             nSales += row.getLong("n_sales");
         }
 
         Statement statement = QueryBuilder.insertInto(table)
-                .value("category_id", categoryId)
+                .value("category", category)
                 .value("n_sales", nSales);
         LOG.debug(statement.toString());
         session.execute(statement);

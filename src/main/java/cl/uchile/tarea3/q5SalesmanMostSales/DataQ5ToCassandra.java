@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cl.uchile.tarea3.q3TopTenProducts;
+package cl.uchile.tarea3.q5SalesmanMostSales;
 
 import cl.uchile.tarea3.CassandraBaseBolt;
 import com.datastax.driver.core.ResultSet;
@@ -16,28 +16,24 @@ import org.apache.storm.tuple.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DataQ3ToCassandra extends CassandraBaseBolt {
+public class DataQ5ToCassandra extends CassandraBaseBolt {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DataQ3ToCassandra.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DataQ5ToCassandra.class);
 
     @Override
     public void execute(Tuple tuple, BasicOutputCollector collector) {
         long nSales = 1;
-        String productName = tuple.getStringByField("productName");
-        long productId = tuple.getLongByField("productId");
-        String table = "sales_per_product";
+        String rutSalesman = tuple.getStringByField("rutSalesman");
+        String table = "salesman_sales";
 
-        // System.out.println("Product " + productName + " with ID " + productId);
-
-        ResultSet results = session.execute("SELECT * FROM " + table + " WHERE product_id="+productId);
+        ResultSet results = session.execute("SELECT * FROM " + table + " WHERE salesman='"+rutSalesman+"'");
         for (Row row : results) {
             nSales += row.getLong("n_sales");
         }
 
         Statement statement = QueryBuilder.insertInto(table)
-                .value("product_id", productId)
-                .value("n_sales", nSales)
-                .value("name", productName);
+                .value("salesman", rutSalesman)
+                .value("n_sales", nSales);
         LOG.debug(statement.toString());
         session.execute(statement);
     }

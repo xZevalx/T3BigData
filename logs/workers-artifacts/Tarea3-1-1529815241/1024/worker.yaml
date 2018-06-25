@@ -1,0 +1,4 @@
+worker-id: 58aa2ca4-b227-4e96-9ef1-92e6bb5465e9
+logs.users: []
+logs.groups: []
+topology.submitter.user: zeval
