@@ -10,7 +10,6 @@ import com.datastax.driver.core.LocalDate;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -39,11 +38,6 @@ public class Cassandra {
             System.out.println("Date: " + date + "Probabilidad: " + probabilidad);
         }
         cluster.close();
-    }
-    static final long NUM_100NS_INTERVALS_SINCE_UUID_EPOCH = 0x01b21dd213814000L;
-
-    public static long getTimeFromUUID(UUID uuid) {
-        return (uuid.timestamp() - NUM_100NS_INTERVALS_SINCE_UUID_EPOCH) / 10000;
     }
 
 }

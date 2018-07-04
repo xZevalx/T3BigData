@@ -63,7 +63,7 @@ public class LocalStormQ1 {
         builder.setBolt("CategoryFilter", new FilterBoltQ1(), 1)
                 .shuffleGrouping("KafkaSpout");
 
-        builder.setBolt("mostSoldCategory", new DataQ1ToCassandra(), 1)
+        builder.setBolt("salesPerCategory", new DataQ1ToCassandra(), 1)
                 .shuffleGrouping("CategoryFilter");
 
         LocalCluster cluster = new LocalCluster();

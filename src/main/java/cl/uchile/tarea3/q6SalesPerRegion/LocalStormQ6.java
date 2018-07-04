@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cl.uchile.tarea3.q5SalesmanMostSales;
+package cl.uchile.tarea3.q6SalesPerRegion;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
@@ -16,12 +16,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public class LocalStormQ5 {
+public class LocalStormQ6 {
 
     /**
      * @param args the command line arguments
      */
-    private static final Logger LOG = LoggerFactory.getLogger(LocalStormQ5.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LocalStormQ6.class);
 
     public static void main(String[] args) {
         //Configuracion de Storm para que lea la cola Local de Kafka
@@ -57,11 +57,11 @@ public class LocalStormQ5 {
         //Accedemos al Spout de Kafka definido previamente
         builder.setSpout("KafkaSpout", kafkaSpout);
 
-        builder.setBolt("SalesmanFilter", new FilterBoltQ5(), 1)
+        builder.setBolt("SalesRegionFilter", new FilterBoltQ6(), 1)
                 .shuffleGrouping("KafkaSpout");
 
-        builder.setBolt("employeeSales", new DataQ5ToCassandra(), 1)
-                .shuffleGrouping("SalesmanFilter");
+        builder.setBolt("salesPerRegion", new DataQ6ToCassandra(), 1)
+                .shuffleGrouping("SalesRegionFilter");
 
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("Tarea3", config, builder.createTopology());

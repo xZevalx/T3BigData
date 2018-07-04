@@ -3,3 +3,4 @@ Q2: create table spent_per_client (client ascii PRIMARY KEY, n_purchases bigint,
 Q3: create table sales_per_product (product_id bigint PRIMARY KEY, name text, n_sales bigint);
 Q4: create table subsidiary_sales (subsidiary_id bigint PRIMARY KEY,  location text, n_sales bigint);
 Q5: create table salesman_sales (salesman ascii PRIMARY KEY, n_sales bigint);
+Q6: create table sales_per_region (date date, region text, total bigint, n_sales bigint, PRIMARY KEY (region, date));
